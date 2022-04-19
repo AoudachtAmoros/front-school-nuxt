@@ -1,0 +1,32 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,400;0,500;0,700;1,400;1,500&display=swap');
+span, p, h1, h2, h3, h4, h4{
+  font-family: 'Ubuntu', sans-serif;
+}
+*{
+    box-sizing: border-box;
+}
+::-webkit-scrollbar {
+    width: 5px;
+    background-color: #fff;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background-color: #173035;
+  }
+  ::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 4px rgba(0, 0, 0, .1);
+    background-color: #fff;
+  }
+.svg-gray{
+    color: rgb(109, 109, 109);
+}
+.svg-red{
+    color: rgb(238, 85, 85);
+}
+.svg-blue{
+    color: rgb(107, 203, 233);
+}
+.svg-white{
+    color: rgb(255, 255, 255);
+}
