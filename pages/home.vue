@@ -1,6 +1,6 @@
 <template>
       <div class="absolute top-0 right-0 left-0 bottom-0 px-2 xs:px-4 sm:px-8 md:px-16 xl:px-28 overflow-x-hidden">
-        <div class="w-full h-full flex items-center justify-center bg-gray-300">
+        <div class="w-full h-full flex items-center justify-center">
             <div class="flex flex-col w-full sm:flex-row items-center sm:justify-around overflow-y-auto h-full">
                 <nuxt-link to="/dashboard">
                     <div class="box bg-white rounded-md shadow-md p-4 my-2 sm:my-4 sm:mx-2 md:mx-4 border cursor-pointer hover:bg-blue-100 flex items-center justify-center">

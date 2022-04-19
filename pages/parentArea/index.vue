@@ -1,14 +1,17 @@
 <template>
   <main  class="flex items-center justify-around w-full" style="height:calc(100vh - 80px)">   
-    <div class="pop-up w-1/3 bg-white rounded shadow-md relative transition ease-in-out delay-6050" :class="{'border-2 border-red-300':(firstScan.error)}">
+    <div class="pop-up w-2/5 bg-gray-700 rounded shadow-md relative transition ease-in-out delay-6050" :class="{'border-2 border-red-300':(firstScan.error)}">
          <Loading v-if="loading1" style="min-height: 350px; background: white" />
         <div v-if="!firstScan.state && !loading1" class="w-full h-full flex flex-col">
             <header class="px-4 py-2 w-full border-b">
-                <h1 class="text-xl text-center text-gray-700 w-full">First Scan</h1>
+                <h1 class="text-xl py-1 text-center text-gray-100 w-full">First Scan</h1>
+                <h3 class="text-gray-100 text-sm py-2 w-full">Enter the RFID to inform your son that his father is here</h3>
+
+
             </header>
-            <section class="w-full px-4 py-2 flex flex-col">
+            <section class="w-full px-4 py-4 flex flex-col">
                 <div class="my-1 w-full">
-                <label class="text-sm text-gray-700" for="">RFID</label>
+                <label class="text-sm text-gray-100" for="">RFID</label>
                 <input
                     placeholder="RFID"
                     type="text"
@@ -17,9 +20,11 @@
                     w-full
                     rounded
                     border
+                    border-gray-600
                     py-2
                     px-2
-                    bg-gray-50
+                    bg-gray-600
+                    text-gray-100
                     text-sm
                     focus:border-2 focus:outline-none
                     "
@@ -51,7 +56,7 @@
         </div>
         <div v-if="firstScan.state && !loading1" class="w-full h-full flex flex-col">
             <header class="px-4 py-2 w-full border-b">
-                <h1 class="text-xl text-center text-gray-700 w-full">Parent Area</h1>
+                <h1 class="text-xl text-center text-gray-100 w-full">Parent Area</h1>
             </header>
             <section class="w-full px-4 py-2 flex flex-col">
                 <h2 class="py-2 text-2xl text-gray-600"> Get your son </h2>
@@ -67,15 +72,17 @@
         </div>
     </div>
     <!-- second scan -->
-    <div class="pop-up w-1/3 bg-white rounded shadow-md relative transition ease-in-out delay-250"  :class="{'border-2 border-red-300':(secondScan.error)}">
+    <div class="pop-up w-2/5 bg-gray-700 rounded shadow-md relative transition ease-in-out delay-250"  :class="{'border-2 border-red-300':(secondScan.error)}">
          <Loading v-if="loading2" style="min-height: 350px; background: white" />
         <div v-if="!secondScan.state && !loading2" class="w-full h-full flex flex-col">
             <header class="px-4 py-2 w-full border-b">
-                <h1 class="text-xl text-center text-gray-700 w-full">Second Scan</h1>
+                <h1 class="text-xl text-center text-gray-100 w-full">Second Scan</h1>
+                <h3 class="text-gray-100 text-sm py-2 w-full">Make sure you have already done with the first scan</h3>
+
             </header>
-            <section class="w-full px-4 py-2 flex flex-col">
+            <section class="w-full px-4 py-4 flex flex-col">
                 <div class="my-1 w-full">
-                <label class="text-sm text-gray-700" for="">RFID</label>
+                <label class="text-sm text-gray-100" for="">RFID</label>
                 <input
                     placeholder="RFID"
                     type="text"
@@ -84,9 +91,11 @@
                     w-full
                     rounded
                     border
+                    border-gray-600
                     py-2
                     px-2
-                    bg-gray-50
+                    bg-gray-600
+                    text-gray-100
                     text-sm
                     focus:border-2 focus:outline-none
                     "
@@ -117,7 +126,7 @@
         </div>
         <div v-if="secondScan.state && !loading2" class="w-full h-full flex flex-col">
             <header class="px-4 py-2 w-full border-b">
-                <h1 class="text-xl text-center text-gray-700 w-full">Parent Area</h1>
+                <h1 class="text-xl text-center text-gray-100 w-full">Parent Area</h1>
             </header>
             <section class="w-full px-4 py-2 flex flex-col">
                 <h2 class="py-2 text-2xl text-gray-600"> Thanks </h2>
@@ -125,7 +134,7 @@
         </div>
         <div v-if="secondScan.error && !loading2" class="w-full h-full flex flex-col">
             <header class="px-4 py-2 w-full border-b">
-                <h1 class="text-xl text-center text-gray-700 w-full">Error</h1>
+                <h1 class="text-xl text-center text-gray-100 w-full">Error</h1>
             </header>
             <section class="w-full px-4 py-2 flex flex-col">
                 <h2 class="py-2 text-xl text-gray-600"> {{secondScan.error}} </h2>
@@ -167,30 +176,14 @@ export default {
             baseUrl: this.$store.state.baseUrl,
             socket : null,
             step :'waiting',
+            scanned1 : false,
+            scanned2: false
         };
     },
     created(){
     },
     async mounted() {
         this.initSockets()
-       return
-        document.querySelector("body").classList.add("stop-scrolling");
-        let area = window.localStorage.getItem('area')
-        if (area) {
-            this.area = area
-        }else{
-            let area = Date.now()
-            window.localStorage.setItem('area',area)
-            this.area = area
-        }
-        this.socket.emit('parentArea',{area:this.area})
-
-        this.socket.on('firstScan',(data)=>{
-            this.firstScanM(data)
-        })
-        this.socket.on('secondScan',(data)=>{
-            this.secondScanM(data)
-        })
     },
   methods: {
      async initSockets() {
@@ -201,30 +194,24 @@ export default {
         // socket.io-client opts:
         // reconnection: false
       });
+        document.querySelector("body").classList.add("stop-scrolling");
+        let area = window.localStorage.getItem('area')
+        if (area) {
+            this.area = area
+        }else{
+            let area = Date.now()
+            window.localStorage.setItem('area',area)
+            this.area = area
+        }
       // connection
-      this.socket.emit("connectIo", {
-        emitterID: this.userID,
-      });
-      // conversations
-      this.socket.emit("getConversations", {
-        memberID: this.userID,
-      });
-      // this.createConversation()
-      this.socket.on("setConversations", (snap) => {
-        this.setConversations(snap);
-      });
-      // last messages
-      this.socket.emit("getLastMessages", {
-        userID: this.userID,
-      });
-      this.socket.on("setLastMessages", (snap) => {
-        this.setLastMessages(snap);
-      });
-      this.socket.on("message", (snap) => {
-        this.onMessage(snap);
-      });
-      // this.createUser()
-      this.isGetUser = false;
+        this.socket.emit('parentArea',{area:this.area})
+
+        this.socket.on('firstScan',(data)=>{
+            this.firstScanM(data)
+        })
+        this.socket.on('secondScan',(data)=>{
+            this.secondScanM(data)
+        })
     },
     async submit1() {
       if (this.form1.RFID.length<3 || !this.isNumeric(this.form1.RFID)) {
@@ -236,6 +223,16 @@ export default {
         this.socket.emit('firstScan',{RFID:this.form1.RFID,area:this.area})
         this.firstScan.user = null
         this.loading1 = true
+        this.scanned2 = true
+        setTimeout(() => {
+          if(!this.scanned2){
+            this.loading2 = false
+            this.firstScan.error = '500 ops server down'
+            setTimeout(() => {
+                  this.firstScan.error =null
+            }, 5000);
+          }
+        }, 4000);
       }
       this.form1.RFID =''
     },
@@ -249,12 +246,23 @@ export default {
         this.socket.emit('secondScan',{RFID:this.form2.RFID,area:this.area})
         this.secondScan.user = null
         this.loading2 = true
+        this.scanned1 = true
+        setTimeout(() => {
+          if(!this.scanned1){
+            this.loading1 = false
+            this.firstScan.error = '500 ops server down'
+            setTimeout(() => {
+                  this.firstScan.error =null
+            }, 5000);
+          }
+        }, 4000);
       }
       this.form1.RFID =''
 
     },
     firstScanM(data){
       this.loading1 = false
+      this.scanned1 = false
       if(data.status==200){
           this.firstScan.state = true
           this.firstScan.user = data.data
@@ -271,6 +279,7 @@ export default {
     },
     secondScanM(data){
         this.loading2 = false
+        this.scanned2 = false
         if(data.status==200){
             this.secondScan.state = true
             this.secondScan.user = data.response
@@ -298,6 +307,7 @@ export default {
 };
 </script>
 <style>
+
 .neoning{
     height: 40px;
     width: 40px;
@@ -313,6 +323,7 @@ export default {
 }
 .pop-up {
   width: 35vw;
+  opacity: .95;
 }
 .rotate--90 {
   transform: rotate(-90deg);

@@ -12,7 +12,7 @@
                     </div>
             </div>
         </div>
-        <div v-else class="w-full h-full flex gap-3 bg-gray-300 p-6">
+        <div v-else class="w-full h-full flex gap-3 p-6">
             <div v-if="users.length==0" class="h-full w-full flex items-center justify-center">
                 <div class="flex flex-col items-center">
                     <span class="neoning bg-red-300 mx-4 "></span>

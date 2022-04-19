@@ -1,5 +1,5 @@
 <template>
-  <header class="sticky top-0 w-full py-2 px-2 xs:px-4 sm:px-8 md:px-16 xl:px-28 flex items-center w-full full-on-dash">
+  <header class="sticky top-0  w-full py-2 px-2 xs:px-4 sm:px-8 md:px-16 xl:px-28 flex items-center w-full full-on-dash">
     <div class="flex items-center justify-between w-full">
         <div class="flex items-center h-full pr-2">
            <span class="text-white text-2xl px-2 cursor-pointer" @click="toHome">
@@ -86,7 +86,7 @@ export default {
   props: {},
   methods:{
     toHome(){
-      this.$router.push({path:'/'})
+      this.$router.push({path:'/home'})
     }
   }
 }
@@ -96,5 +96,6 @@ export default {
 header{
   background: rgb(19, 41, 59);
   min-height: 60px;
+  opacity: .8;
 }
 </style>
