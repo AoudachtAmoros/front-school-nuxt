@@ -37,7 +37,7 @@ export default {
           { // At least one entry is required
             name: 'chat',
            /*  url: 'http://localhost:7000', */
-            url: '192.168.1.228:7000',
+            url: '0.0.0.0:7000',
 
             // default: true,
             // vuex: { /* see section below */ },
@@ -58,5 +58,7 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
+    rootDir: process.cwd(),
+    buildDir: process.cwd() + '/.nuxt/'
   }
 }
