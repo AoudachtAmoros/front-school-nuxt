@@ -104,7 +104,6 @@
 </template>
 <script>
 import Loading from "./loading.vue";
-import axios from "axios";
 export default {
   components: {
     Loading,
@@ -132,7 +131,8 @@ export default {
       if (this.inputValidation()) {
         this.loading = true;
         try {
-          var response = await axios.post(`${this.baseUrl}/login`, {
+          // var response = await axios.post(`${this.baseUrl}/login`, {
+          var response = await this.$axios.post(`http:/192.168.43.236/login`, {
             email: this.form.email,
             password: this.form.password,
           });
@@ -159,29 +159,29 @@ export default {
         !/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,6})+$/.test(this.form.email)
       ) {
         this.formError.email = true;
-        this.$vs.notify({
-          title: "Validation Error",
-          text: "Invalid email",
-          color: "danger",
-          time: 4000,
-          position: "top-right",
-        });
+         this.toast("warning", "Invalid email")
+
+
         return false;
       }
       if (this.form.password.length < 6) {
         this.formError.password = true;
+         this.toast("warning", "Password must be more than 6 digits")
 
-        this.$vs.notify({
-          title: "Validation Error",
-          text: "Password must be more than 6 digits",
-          color: "danger",
-          time: 4000,
-          position: "top-right",
-        });
         return false;
       }
       return true;
     },
+          toast(type, message){
+          this.$toast(message, {
+          position: "top-right",
+          timeout: 2500,
+          transition :'Vue-Toastification__bounce',
+          closeButton: "button",
+          icon: true,
+          type: type
+      });
+  },
   },
   beforeDestroy() {
     document.querySelector("body").classList.remove("stop-scrolling");

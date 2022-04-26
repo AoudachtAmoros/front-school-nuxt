@@ -1,5 +1,5 @@
 <template>
-  <main  class="flex items-center justify-around w-full" style="height:calc(100vh - 80px)">   
+  <main  class="flex items-center justify-around w-full" style="height:calc(100vh - 80px)">
     <div class="pop-up w-2/5 bg-gray-700 rounded shadow-md relative transition ease-in-out delay-6050" :class="{'border-2 border-red-300':(firstScan.error)}">
          <Loading v-if="loading1" style="min-height: 350px; background: white" />
         <div v-if="!firstScan.state && !loading1" class="w-full h-full flex flex-col">
@@ -216,6 +216,7 @@ export default {
     async submit1() {
       if (this.form1.RFID.length<3 || !this.isNumeric(this.form1.RFID)) {
         this.firstScan.error = "Id must be more than 3 digit"
+          this.toast("warning", "Id must be more than 3 digit")
         setTimeout(() => {
               this.firstScan.error = null
         }, 5000);
@@ -228,6 +229,7 @@ export default {
           if(!this.scanned2){
             this.loading2 = false
             this.firstScan.error = '500 ops server down'
+          this.toast("warning", '500 ops server down')
             setTimeout(() => {
                   this.firstScan.error =null
             }, 5000);
@@ -239,7 +241,8 @@ export default {
     async submit2() {
       if (this.form2.RFID.length<3 || !this.isNumeric(this.form1.RFID)) {
         this.secondScan.error = "Id must be more than 3 digit"
-        setTimeout(() => {
+          this.toast("warning", "Id must be more than 3 digit")
+          setTimeout(() => {
               this.secondScan.error = null
         }, 5000);
       }else{
@@ -251,6 +254,7 @@ export default {
           if(!this.scanned1){
             this.loading1 = false
             this.firstScan.error = '500 ops server down'
+          this.toast("warning", '500 ops server down')
             setTimeout(() => {
                   this.firstScan.error =null
             }, 5000);
@@ -272,6 +276,8 @@ export default {
           }, 5000);
         }else{
           this.firstScan.error = data.error
+          this.toast("warning", response.data.message)
+
           setTimeout(() => {
                 this.firstScan.error =null
           }, 5000);
@@ -289,6 +295,7 @@ export default {
             }, 5000);
         }else{
             this.secondScan.error = data.error
+          this.toast("warning", response.data.message)
             setTimeout(() => {
                   this.secondScan.error =null
             }, 5000);
@@ -299,7 +306,17 @@ export default {
     },
     close() {
       this.$emit("close");
-    }
+    },
+         toast(type, message){
+          this.$toast(message, {
+          position: "top-right",
+          timeout: 2500,
+          transition :'Vue-Toastification__bounce',
+          closeButton: "button",
+          icon: true,
+          type: type
+      });
+      }
   },
   beforeDestroy() {
     document.querySelector("body").classList.remove("stop-scrolling");

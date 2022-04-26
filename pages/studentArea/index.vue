@@ -112,7 +112,7 @@ export default {
         isLogged : true,
         password : '',
         area : null,
-        state : 1,
+        state : 0,
         currentIndex:0,
         paylod:{
             parentImage:'',

@@ -21,8 +21,7 @@ export default {
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [
-  ],
+  plugins: [],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -34,26 +33,26 @@ export default {
   ],
   io: {
     sockets: [
-          { // At least one entry is required
-            name: 'chat',
-           /*  url: 'http://localhost:7000', */
-            url: '192.168.43.236:7000',
-
-            // default: true,
-            // vuex: { /* see section below */ },
-            // namespaces: { /* see section below */ }
-          }
+        { // At least one entry is required
+          name: 'chat',
+          /*  url: 'http://localhost:7000', */
+          url: '192.168.43.236:7000',
+          // default: true,
+          // vuex: { /* see section below */ },
+          // namespaces: { /* see section below */ }
+        }
     ]
   },
   server:{
       host: "0.0.0.0",
-      port : 5000
+      port : 3000
   },
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     '@nuxtjs/axios',
     'nuxt-socket-io',
+    "vue-toastification/nuxt",
   ],
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
